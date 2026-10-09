@@ -1,0 +1,333 @@
+@import "tailwindcss";
+
+/* ------------------------------------------------------------------
+   VERBO DE DIOS — DIGITAL EXPERIENCE
+   Sistema de diseño: color, tipografía, ritmo y movimiento.
+------------------------------------------------------------------- */
+
+@theme {
+  /* Color ---------------------------------------------------------- */
+  --color-night: #0b2345;
+  --color-night-deep: #071a35;
+  --color-institutional: #153c72;
+  --color-vivid: #2258a0;
+  --color-ice: #f5f8fc;
+  --color-mist: #e7edf5;
+  --color-graphite: #15253b;
+  --color-gold: #c7a369;
+  --color-gold-soft: #e0cba6;
+
+  /* Tipografía ----------------------------------------------------- */
+  --font-display: var(--font-jakarta), "Plus Jakarta Sans", system-ui, sans-serif;
+  --font-sans: var(--font-dm-sans), "DM Sans", system-ui, sans-serif;
+  --font-editorial: var(--font-cormorant), "Cormorant Garamond", Georgia, serif;
+
+  /* Escala fluida -------------------------------------------------- */
+  --text-hero: clamp(2.875rem, 1.35rem + 6.6vw, 7rem);
+  --text-display: clamp(2.125rem, 1.15rem + 4vw, 5rem);
+  --text-title: clamp(1.75rem, 1.2rem + 2.2vw, 2.75rem);
+  --text-lead: clamp(1.0625rem, 1rem + 0.5vw, 1.3125rem);
+  --text-body: clamp(0.9688rem, 0.94rem + 0.2vw, 1.1875rem);
+  --text-label: clamp(0.6875rem, 0.66rem + 0.12vw, 0.8125rem);
+
+  /* Ritmo vertical ------------------------------------------------- */
+  --spacing-section: clamp(4rem, 2rem + 8vw, 10rem);
+  --spacing-gutter: clamp(1.25rem, 0.3rem + 4.2vw, 5.5rem);
+
+  /* Movimiento ----------------------------------------------------- */
+  --ease-editorial: cubic-bezier(0.22, 1, 0.36, 1);
+}
+
+/* ------------------------------------------------------------------
+   Base
+------------------------------------------------------------------- */
+
+@layer base {
+  :root {
+    color-scheme: light;
+    scroll-behavior: smooth;
+    -webkit-tap-highlight-color: transparent;
+  }
+
+  @media (prefers-reduced-motion: reduce) {
+    :root {
+      scroll-behavior: auto;
+    }
+    *,
+    *::before,
+    *::after {
+      animation-duration: 0.001ms !important;
+      animation-iteration-count: 1 !important;
+      transition-duration: 0.001ms !important;
+      scroll-behavior: auto !important;
+    }
+  }
+
+  html,
+  body {
+    max-width: 100%;
+    overflow-x: clip;
+  }
+
+  body {
+    background-color: #ffffff;
+    color: var(--color-graphite);
+    font-family: var(--font-sans);
+    font-size: var(--text-body);
+    line-height: 1.65;
+    -webkit-font-smoothing: antialiased;
+    text-rendering: optimizeLegibility;
+  }
+
+  h1,
+  h2,
+  h3,
+  h4 {
+    font-family: var(--font-display);
+    color: var(--color-night);
+    line-height: 1.02;
+    letter-spacing: -0.028em;
+    text-wrap: balance;
+  }
+
+  p {
+    text-wrap: pretty;
+  }
+
+  ::selection {
+    background: var(--color-night);
+    color: #fff;
+  }
+
+  :focus-visible {
+    outline: 2px solid var(--color-gold);
+    outline-offset: 3px;
+    border-radius: 2px;
+  }
+
+  /* Scrollbar discreta, sólo en escritorio */
+  @media (pointer: fine) {
+    * {
+      scrollbar-width: thin;
+      scrollbar-color: var(--color-mist) transparent;
+    }
+  }
+}
+
+/* ------------------------------------------------------------------
+   Utilidades de composición
+------------------------------------------------------------------- */
+
+@utility shell {
+  width: 100%;
+  max-width: 1440px;
+  margin-inline: auto;
+  padding-inline: var(--spacing-gutter);
+}
+
+@utility shell-narrow {
+  width: 100%;
+  max-width: 1120px;
+  margin-inline: auto;
+  padding-inline: var(--spacing-gutter);
+}
+
+@utility section-y {
+  padding-block: var(--spacing-section);
+}
+
+@utility eyebrow {
+  font-family: var(--font-display);
+  font-size: var(--text-label);
+  font-weight: 600;
+  letter-spacing: 0.22em;
+  text-transform: uppercase;
+  line-height: 1.2;
+}
+
+@utility hairline {
+  height: 1px;
+  width: 100%;
+  background: currentColor;
+  opacity: 0.16;
+}
+
+/* Textura muy sutil para los bloques azules cinematográficos */
+@utility grain {
+  position: relative;
+  isolation: isolate;
+
+  &::after {
+    content: "";
+    position: absolute;
+    inset: 0;
+    z-index: -1;
+    pointer-events: none;
+    opacity: 0.5;
+    background-image:
+      radial-gradient(ellipse 90% 60% at 18% 0%, rgba(34, 88, 160, 0.42), transparent 62%),
+      radial-gradient(ellipse 70% 55% at 92% 88%, rgba(21, 60, 114, 0.5), transparent 60%);
+  }
+}
+
+/* Punto focal responsivo de las fotografías (ver `SmartImage`) */
+.smart-focus {
+  object-position: var(--focus, 50% 50%);
+}
+
+@media (max-width: 767px) {
+  .smart-focus {
+    object-position: var(--focus-sm, var(--focus, 50% 50%));
+  }
+}
+
+/* Placeholder editorial cuando aún no existe la fotografía definitiva */
+@utility plate {
+  background-color: var(--color-mist);
+  background-image:
+    linear-gradient(135deg, rgba(11, 35, 69, 0.08) 0%, rgba(11, 35, 69, 0) 55%),
+    repeating-linear-gradient(
+      -45deg,
+      rgba(11, 35, 69, 0.05) 0px,
+      rgba(11, 35, 69, 0.05) 1px,
+      transparent 1px,
+      transparent 11px
+    );
+}
+
+/* ------------------------------------------------------------------
+   Microinteracciones
+------------------------------------------------------------------- */
+
+/* Subrayado que crece desde la izquierda */
+.link-underline {
+  position: relative;
+  display: inline-block;
+}
+
+.link-underline::after {
+  content: "";
+  position: absolute;
+  left: 0;
+  bottom: -2px;
+  height: 1px;
+  width: 100%;
+  background: currentColor;
+  transform: scaleX(0);
+  transform-origin: left;
+  transition: transform 520ms var(--ease-editorial);
+}
+
+.link-underline:hover::after,
+.link-underline:focus-visible::after {
+  transform: scaleX(1);
+}
+
+/* Zoom controlado de fotografía dentro de una tarjeta */
+.media-zoom img {
+  transition: transform 620ms var(--ease-editorial), filter 620ms var(--ease-editorial);
+  will-change: transform;
+}
+
+.group:hover .media-zoom img,
+.group:focus-visible .media-zoom img {
+  transform: scale(1.035);
+}
+
+/* Flecha que avanza */
+.arrow-shift {
+  transition: transform 420ms var(--ease-editorial);
+}
+
+.group:hover .arrow-shift,
+.group:focus-visible .arrow-shift {
+  transform: translate3d(0.28rem, -0.28rem, 0);
+}
+
+/* Revelado de líneas tipográficas (ver SplitHeading).
+   `.line-mask` recorta cada línea mientras entra en la animación, por lo que
+   NUNCA debe heredar el line-height ajustado del titular (0.9–1.04): a ese
+   tamaño, descendentes (g, p, y), cedillas y tildes sobre mayúsculas (Ó, Á)
+   quedaban literalmente cortados por el propio recorte. Se fija aquí una
+   altura de línea segura, independiente del titular, y la separación
+   editorial compacta entre líneas se restaura con un margen negativo SOLO
+   entre líneas consecutivas (nunca contra el margen del título en sí, para
+   no interferir con el `mt-*` que aplica cada sección). */
+.line-mask {
+  overflow: hidden;
+  display: block;
+  line-height: 1.18;
+}
+
+.line-mask + .line-mask {
+  margin-top: -0.26em;
+}
+
+/* Cada `.line-mask` representa UNA línea forzada a propósito (el salto viene
+   del array `lines`, no del flujo del texto). Si el contenedor es alguna vez
+   demasiado estrecho para esa línea a su tamaño de fuente, debe desbordarse
+   de forma visible en horizontal — nunca partirse en una segunda línea física
+   que el propio recorte de la máscara se come en silencio. */
+.line-mask > * {
+  white-space: nowrap;
+}
+
+/* ------------------------------------------------------------------
+   Transición de entrada de página (CSS: el estado final siempre es visible)
+------------------------------------------------------------------- */
+
+@keyframes page-enter {
+  from {
+    opacity: 0;
+    transform: translate3d(0, 8px, 0);
+  }
+  to {
+    opacity: 1;
+    transform: none;
+  }
+}
+
+.page-enter {
+  animation: page-enter 450ms var(--ease-editorial) both;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .page-enter {
+    animation: none;
+  }
+}
+
+/* ------------------------------------------------------------------
+   Entrada en carga (CSS): se ejecuta en el primer pintado, sin esperar a
+   JavaScript. Mantiene el LCP rápido y el contenido nunca queda invisible.
+   La regla global de `prefers-reduced-motion` las deja en su estado final.
+------------------------------------------------------------------- */
+
+@keyframes line-rise {
+  from {
+    transform: translate3d(0, 110%, 0);
+  }
+  to {
+    transform: none;
+  }
+}
+
+.line-rise {
+  animation: line-rise 950ms var(--ease-editorial) both;
+  will-change: transform;
+}
+
+@keyframes fade-rise {
+  from {
+    opacity: 0;
+    transform: translate3d(0, 14px, 0);
+  }
+  to {
+    opacity: 1;
+    transform: none;
+  }
+}
+
+.fade-rise {
+  animation: fade-rise 820ms var(--ease-editorial) both;
+}
